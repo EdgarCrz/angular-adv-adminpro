@@ -1,1 +1,13 @@
-<p>grafica1 works!</p>
+<!-- Este es un componente padre que utiliza un componente hijo para replicar una funcion y mantener el codigo mas limpio -->
+<div class="row">
+  <div class="col-6"><app-dona [titulo]="'Grafica 1'"></app-dona></div>
+  <div class="col-6">
+    <app-dona [labels]="labels1" [datas]="data1"></app-dona>
+    <!-- notese que usamos [] para hacer el envio de nuestro componente "hijo" esta info por supuesto tiene que estar declarada como @Input para que la podamos recibir -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-6"><app-dona [titulo]="'Grafica 3'"></app-dona></div>
+  <div class="col-6"><app-dona [titulo]="'Grafica 4'"></app-dona></div>
+</div>
+<!-- asi podemos reutilizar un mismo componente como en este caso "app-dona" y mandarle valores diferentes -->
