@@ -10,8 +10,8 @@
     <div class="card-body">
       <form
         class="form-horizontal form-material"
+        (submit)="login()"
         id="loginform"
-        action="index.html"
       >
         <a href="javascript:void(0)" class="text-center db"
           ><img src="../assets/images/logo-icon.png" alt="Home" /><br /><img
@@ -64,6 +64,9 @@
             >
               Log In
             </button>
+            <!-- Al declarar nuestro button type submit dentro de este formulario, quiere  -->
+            <!-- decir que toda la info que estamos pecibiendo en este formulario lo vamos a enviar a donde nos indique -->
+            <!-- el inicio de la etiqueta "form" en este caso  le añadimos un evento submit y al escucharlo ejecutaremos una funcion -->
           </div>
         </div>
         <div class="row">
