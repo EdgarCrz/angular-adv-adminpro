@@ -7,12 +7,14 @@ import { Grafica1Component } from './grafica1/grafica1.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   // implementacion de rutas hijas(son las que se encuentran dentro de una ruta padre como las de abajo)
   {
     path: 'dashboard',
     component: PagesComponent,
+    canActivate:[ AuthGuard], // agregamos nuestro guard, esto determinara si puede o no mostrar las siguientes rutas
     children: [
       {
         path: '',

@@ -20,6 +20,7 @@ export class BreadcrumbsComponent implements OnDestroy {
         document.title = `AdminPro - ${titulo}`; // de esta manera cambiamos el titulo de la pestaña de la pagina
       });
   }
+
   ngOnDestroy(): void {
     this.tituloSubs$.unsubscribe(); // al terminar con esa vista,  lo proximo que hara es desuscribirnos para detener la ejecucion del observable
   }
