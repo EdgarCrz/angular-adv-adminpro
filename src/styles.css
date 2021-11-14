@@ -5,12 +5,16 @@
   animation-fill-mode: both;
 }
 
-#themecolors .selector, .cursor {
+#themecolors .selector,
+.cursor {
   cursor: pointer;
 }
-
 
 #google-btn {
   display: flex;
   justify-content: center;
+}
+
+.img-avatar {
+  width: 200px;
 }

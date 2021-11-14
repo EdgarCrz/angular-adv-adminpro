@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
     return this.usuarioService.validarToken().pipe(
       // "estaAutenticado" en realidad es el true o false que nos resuelve el observable
       tap((estaAutenticado: any) => {
+        
         if (!estaAutenticado) {
           this.router.navigateByUrl('/login');
         }

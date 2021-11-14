@@ -9,6 +9,8 @@ import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { Usuario } from '../models/usuario.model';
+import { HeaderComponent } from '../shared/header/header.component';
 
 const base_url = environment.base_url;
 declare const gapi: any;
@@ -18,6 +20,7 @@ declare const gapi: any;
 })
 export class UsuarioService {
   public auth2: any;
+  public usuario!: Usuario; // es nuestra nueva instancia de tipo modelo
   // basicamente esto es un servicio como todos los demas
   constructor(
     private http: HttpClient,
@@ -27,6 +30,13 @@ export class UsuarioService {
     this.googleInit();
   }
 
+  get token() {
+    return localStorage.getItem('token') || ''; //para evitar estar haciendo esto cada que necesitemos el token del localstorage
+  }
+
+  get uid(): string {
+    return this.usuario.uid || '';
+  }
   // Logout
 
   googleInit() {
@@ -58,20 +68,21 @@ export class UsuarioService {
 
   //Validar token para adar acceso una vez que nos hagamos login, ya que resuelve un booleano  nos sirve para el guard
   validarToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
-
     return this.http
       .get(`${base_url}/login/renew`, {
         headers: {
-          'x-token': token, //al pasarlo por el renew se genera un nuevo token mas actual por ende el token que esta guardado ya no sirve por eso abajo tenemos que mandar el nuevo
+          'x-token': this.token, //al pasarlo por el renew se genera un nuevo token mas actual por ende el token que esta guardado ya no sirve por eso abajo tenemos que mandar el nuevo
         },
       })
       .pipe(
-        tap((resp: any) => {
+        map((resp: any) => {
+          const { email, google, img = '', nombre, role, uid } = resp.usuario; // desestructuramos la info de la respuesta json
+          this.usuario = new Usuario(nombre, email, '', img, google, role, uid); //creamos una nueva instancia del usuario
           localStorage.setItem('token', resp.token); //Este token que viene en el resp es una nueva version que nos propporciona el backend diferente ya que el renew token genera un nuevo token, a partir de el viejo token
+          return true;
         }),
         // si hay una respuesta devolvemos un true si hay error false y con eso activamos o desactivamos el
-        map((resp) => true), // recordemos que map es un operador de transformacion, cambia el resultado de un observable en lo que nosotros queramos
+        // recordemos que map es un operador de transformacion, cambia el resultado de un observable en lo que nosotros queramos
         catchError((error) => of(false))
       );
   }
@@ -86,6 +97,21 @@ export class UsuarioService {
       })
     );
   };
+
+  // Actualizar usuario
+  actualizarPerfil(data: { email: string; nombre: string; role: any }) {
+    // Agregamos el role
+    data = {
+      ...data,
+      role: this.usuario.role,
+    };
+    //url/params/body/headers
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
+      headers: {
+        'x-token': this.token, //al pasarlo por el renew se genera un nuevo token mas actual por ende el token que esta guardado ya no sirve por eso abajo tenemos que mandar el nuevo
+      },
+    });
+  }
 
   // Inicio de sesión "normal"
   login = (formData: LoginForm) => {

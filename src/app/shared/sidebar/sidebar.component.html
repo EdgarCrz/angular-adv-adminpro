@@ -12,13 +12,15 @@
             class="has-arrow waves-effect waves-dark"
             href="#"
             aria-expanded="false"
-            ><img src="./assets/images/users/profile.png" alt="user" /><span
-              class="hide-menu"
-              >Steave Jobs
+          >
+            <!-- Agregamos la img del usuario proveniente del back -->
+            <img [src]="usuario.imagenUrl" alt="user" /><span class="hide-menu"
+              >{{ usuario.nombre }}
             </span></a
           >
           <ul aria-expanded="false" class="collapse">
-            <li><a href="javascript:void()">My Profile </a></li>
+            <!-- TODO: al cuidado al poner la ruta, si no le ponemos el "." no concatenara, e ira solo a "/perfil" con el punto ira a "dashboard/perfil" -->
+            <li><a routerLink="./perfil" routerLinkActive="active">My Profile </a></li>
             <li><a href="javascript:void()">My Balance</a></li>
             <li><a href="javascript:void()">Inbox</a></li>
             <li>

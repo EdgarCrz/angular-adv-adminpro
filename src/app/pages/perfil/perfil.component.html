@@ -1,0 +1,89 @@
+<div class="row">
+  <!-- Esta estructura se obtuvo del template original, elegimos el form que mas nos agrado -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Mi perfil de usuario</h4>
+        <h6 class="card-subtitle">Ajustes</h6>
+        <!-- conectamos este form con nuestro componente que va a manejar el formulario -->
+        <form
+          [formGroup]="perfilForm"
+          (ngSubmit)="actualizarPerfil()"
+          class="form p-t-20"
+        >
+          <div class="form-group">
+            <label for="exampleInputuname">User Name</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-user"></i></div>
+              <input
+                formControlName="nombre"
+                type="text"
+                class="form-control"
+                id="exampleInputuname"
+                placeholder="Nombre del usuario"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-email"></i></div>
+              <!-- readOnly: convierte un input en un campo de SOLO LECTURA, para evitar que el usuario pueda modificarlo, funciona como un ng-if pero por el contrario este si lo mostramos solo no podemos modificarlo, el otro no muestra el campo -->
+              <!-- Si cumple la condicion de que usuario tenga el campo de google entonces no se podra modificar, si no tiene este campo si se puede cambiar -->
+              <input
+                formControlName="email"
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                placeholder="Enter email"
+                [readOnly]="usuario.google"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="perfilForm.invalid"
+            class="btn btn-success btn-block waves-effect waves-light m-r-10"
+          >
+            <i class="fa fa-save"></i>
+            Guardar cambios
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Avatar</h4>
+        <h6 class="card-subtitle">Imagen del usuario</h6>
+        <!-- asi mostramos la imagen accediendo al model usuario en su propiedad/metodo get que noes trae la ruta de la img -->
+        <div class="text-center">
+          <!-- Tenemos dos img una es la img que proviene del model usuario actual y otra img que es la previa al cambiar condicionamos la vista de ambas para que solo se vea una o la otra -->
+          <!-- Si se muestra una la otra no se muestra y viceversa -->
+          <img
+            *ngIf="!imgTemp"
+            [src]="usuario.imagenUrl"
+            class="img-avatar"
+            alt=""
+          />
+          <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar" alt="" />
+        </div>
+        <input type="file" (change)="cambiarImagen($event)" />
+        <br />
+        <br />
+        <button
+          type="button"
+          class="btn btn-success btn-block waves-effect waves-light m-r-10"
+          [disabled]="!imagenSubir"
+          (click)="subirImagen()"
+        >
+          <i class="fa fa-save"></i>
+          Cambiar imagen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

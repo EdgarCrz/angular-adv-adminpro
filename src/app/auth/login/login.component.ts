@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
           localStorage.removeItem('email'); //asi removemos un valor guardado en localStorage
         }
         //TODO:Movernos al dash
+        // NOTA IMPORTANTE: Cuando queramos navegar esta URL es ahi cuando se ejecuta nuestro Guard que nos dara o no el acceso
         this.router.navigateByUrl('/');
       },
       (err) => {
@@ -93,6 +94,7 @@ export class LoginComponent implements OnInit {
 
           // Ya que estamos usando librerias que no son de angular tenemos que usar ngZone, para poder ejecutar trabajos fuera de angular
           this.ngZone.run(() => {
+            // de nuevo aqui accedemos no sin antes pasar por el auth y conel token podemos pasar
             this.router.navigateByUrl('/');
           });
         }); //llamamos a nuestro servicio que tiene la peticion http para logearnos con google y ya que es un observable para que se ejecute nos suscribimos

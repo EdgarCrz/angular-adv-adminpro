@@ -8,13 +8,14 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
   // implementacion de rutas hijas(son las que se encuentran dentro de una ruta padre como las de abajo)
   {
     path: 'dashboard',
     component: PagesComponent,
-    canActivate:[ AuthGuard], // agregamos nuestro guard, esto determinara si puede o no mostrar las siguientes rutas
+    canActivate: [AuthGuard], // agregamos nuestro guard, esto determinara si puede o no mostrar las siguientes rutas
     children: [
       {
         path: '',
@@ -40,6 +41,12 @@ const routes: Routes = [
         path: 'promesas',
         component: PromesasComponent,
         data: { titulo: 'Promesas' },
+      },
+      
+      {
+        path: 'perfil',
+        component: PerfilComponent,
+        data: { titulo: 'Perfil' },
       },
       { path: 'rxjs', component: RxjsComponent, data: { titulo: 'Rxjs' } },
     ],
