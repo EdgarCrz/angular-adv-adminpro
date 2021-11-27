@@ -20,7 +20,9 @@
           >
           <ul aria-expanded="false" class="collapse">
             <!-- TODO: al cuidado al poner la ruta, si no le ponemos el "." no concatenara, e ira solo a "/perfil" con el punto ira a "dashboard/perfil" -->
-            <li><a routerLink="./perfil" routerLinkActive="active">My Profile </a></li>
+            <li>
+              <a routerLink="./perfil" routerLinkActive="active">My Profile </a>
+            </li>
             <li><a href="javascript:void()">My Balance</a></li>
             <li><a href="javascript:void()">Inbox</a></li>
             <li>
@@ -36,7 +38,7 @@
             class="has-arrow waves-effect waves-dark"
             href="#"
             aria-expanded="false"
-            ><i class="mdi mdi-gauge"></i
+            ><i [class]="item.icono"></i
             ><span class="hide-menu"
               >{{ item.titulo }}
               <span class="label label-rouded label-themecolor pull-right">{{

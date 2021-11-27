@@ -1,0 +1,62 @@
+<!-- [class.oculto]: de esta manera podemos condicionar una clase con un valor booleano en este caso el valor de una propiedad de nuestra clase -->
+
+<!-- TRUE: PARA MOSTRAR -->
+<!-- FALSE: PARA MOSTRAR -->
+<div
+  class="fondo-modal-imagen animated fadeInd fast"
+  [class.oculto]="modalImagenService.ocultarModal"
+>
+  <div
+    class="modal fade show"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel1"
+    style="display: block"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel1">Cargar imagen</h4>
+          <button
+            type="button"
+            class="close"
+            (click)="cerrarModal()"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3>Seleccione una imagen</h3>
+          <div class="text-center">
+            <!-- Tenemos dos img una es la img que proviene del model usuario actual y otra img que es la previa al cambiar condicionamos la vista de ambas para que solo se vea una o la otra -->
+            <!-- Si se muestra una la otra no se muestra y viceversa -->
+            <img
+              *ngIf="!imgTemp"
+              [src]="modalImagenService.img"
+              class="img-avatar"
+              alt=""
+            />
+            <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar" alt="" />
+          </div>
+          <input type="file" (change)="cambiarImagen($event)" />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-default"
+            (click)="cerrarModal()"
+            data-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary" (click)="subirImagen()">
+            Actualizar foto
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

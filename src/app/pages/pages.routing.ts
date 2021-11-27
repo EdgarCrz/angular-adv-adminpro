@@ -9,6 +9,7 @@ import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { PerfilComponent } from './perfil/perfil.component';
+import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 
 const routes: Routes = [
   // implementacion de rutas hijas(son las que se encuentran dentro de una ruta padre como las de abajo)
@@ -42,15 +43,24 @@ const routes: Routes = [
         component: PromesasComponent,
         data: { titulo: 'Promesas' },
       },
-      
+
       {
         path: 'perfil',
         component: PerfilComponent,
         data: { titulo: 'Perfil' },
       },
       { path: 'rxjs', component: RxjsComponent, data: { titulo: 'Rxjs' } },
+
+      // Mantenimientos
+
+      {
+        path: 'usuarios',
+        component: UsuariosComponent,
+        data: { titulo: 'Usuarios de aplicación' },
+      },
     ],
   },
+
   //   Traduccion, tenemos nuestras rutas principales, que nos rutean a nuestros modulos, cada modulo
   //   tiene componentes, y pueden llegar a ser muchos, asi que cada modulo trabaja su propio sistema de rutas
   // asi todas las rutas se vuelven menos complejas y no tenemos un cagadero

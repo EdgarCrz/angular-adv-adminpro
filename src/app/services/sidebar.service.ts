@@ -16,6 +16,15 @@ export class SidebarService {
         { titulo: 'Rxjs', url: 'rxjs' },
       ],
     },
+    {
+      titulo: 'Mantenimiento',
+      icono: 'mdi mdi-folder-lock-open',
+      submenu: [
+        { titulo: 'Usuario', url: 'usuarios' },
+        { titulo: 'Hospitales', url: 'hospitales' },
+        { titulo: 'Médicos', url: 'medicos' },
+      ],
+    },
   ];
   // este servicio esta siendo usado en el componente ts
   // este arreglo contiene 1 elemento, y el a su vez contiene varias propiedades(basicamnte es un json)

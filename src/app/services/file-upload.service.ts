@@ -9,6 +9,7 @@ const base_url = environment.base_url;
 })
 export class FileUploadService {
   constructor() {}
+// TODO:esta peticion se manejo fetch api, es la manera nativa de hacer peticiones http, por el contrario tambien se puede usar httpclient para hacer esta petocion, solo se enseño otra forma de hacerlo
 
   // Ya que este metodo va a trabajar en base a promesas tenemos que agregar el async
   async actualizarFoto(

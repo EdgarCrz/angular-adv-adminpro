@@ -1,0 +1,110 @@
+<!-- Input de busqueda -->
+<div class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar usuario..."
+          (keyup)="buscar(txtTermino.value)"
+          #txtTermino
+        />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Loading -->
+<div *ngIf="cargando" class="row animated fadeIn fast">
+  <!-- condicionamos si se encuentr cargando al iniciar el proceso se encuentra true, por eso este elemento se mostrara, hasta que cargando cambie de valor y esto lo logra una vez que termina la suscripcion -->
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere</p>
+    </div>
+  </div>
+</div>
+<!-- Tabla de usuarios -->
+<!-- Aqui para mostrar la tabla la validacion devera ser contraria ya que al terminar el proceso de obtenicion de datos cargando termina con valor false, entonces hacemos la negacion de false para obtener un true y asi mostrar la table -->
+<div class="row animated fadeIn fast" *ngIf="!cargando">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Total de usuarios ({{ totalUsuarios }})</h4>
+        <h6 class="card-subtitle">Usuarios registrados en la aplicación.</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="w100">Imagen</th>
+                <th>Correo</th>
+                <th>Nombre</th>
+                <th class="w140">Role</th>
+                <th class="w100">Auth</th>
+                <th class="text-nowrap w100">Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let usuario of usuarios">
+                <!-- Recorremos usuario recordemos que es un array-->
+                <td class="text-center">
+                  <!-- Ojo que para mostrar en esta img se tuvo que crear una instancia del modelo usuario para que pudieramos usar la img, ver mas en usuario.service -->
+                  <img
+                    class="avatar cursor"
+                    [src]="usuario.imagenUrl"
+                    alt="Avatar de usuario"
+                    (click)="abrirModal(usuario)"
+                  />
+                </td>
+                <td>{{ usuario.email }}</td>
+                <td>{{ usuario.nombre }}</td>
+                <td>
+                  <!-- uso de la caja de bananas:  En este caso es un enlace bi-direccional osea de ida y vuelta, el valor que tengamos almacenado en nuestra propiedad usuario se mostrara y de igual manera si modificamos el valor de en este caso el select, cambiara el valor en la propiedad usuariox -->
+                  <!-- Observemos que al escuchar el evento change(cambio) se ejecuta el metodo "cambiarRole(usuario)"  -->
+                  <select
+                    class="form-control-sm"
+                    [(ngModel)]="usuario.role"
+                    (change)="cambiarRole(usuario)"
+                  >
+                    <!--Se usa la caja de bananas, para unir evento y propiedades: en este caso el evento seria la seleccion y la propiedad vinculada es usuario.role-->
+                    <option value="ADMIN_ROLE">Admin</option> <!--Uno de estos value sera seleccionado, y el valor sera enviado al select, ahora select tendra un value el cual será enviado por el [(ngModel="")] sera enviado al usuario.role-->
+                    <option value="USER_ROLE">User</option> <!--Uno de estos value sera seleccionado, y el valor sera enviado al select, ahora select tendra un value el cual será enviado por el [(ngModel="")] sera enviado al usuario.role-->
+                  </select>
+                </td>
+                <td>
+                  <span *ngIf="usuario.google" class="label label-danger"
+                    >Google</span
+                  >
+                  <span *ngIf="!usuario.google" class="label label-info"
+                    >Email</span
+                  >
+                </td>
+                <td class="text-nowrap text-center">
+                  <a
+                    class="cursor"
+                    data-toggle="tooltip"
+                    data-original-title="Borrar"
+                    (click)="eliminarUsuario(usuario)"
+                  >
+                    <i class="fa fa-close text-danger"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!--Si no existe un termino mostramos los botones de navegacion, si existe un termino no mostramos los botones/ el profe uso txtTermino.value.length === 0-->
+        <div *ngIf="!txtTermino.value">
+          <Button (click)="cambiarDesde(-5)" class="btn btn-secondary"
+            >Anterior</Button
+          >
+          &nbsp;
+          <Button (click)="cambiarDesde(5)" class="btn btn-secondary"
+            >Siguiente</Button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core'; //ngZone: Solventa el problema el problema de ejecucion de una libreria de terceros, en este caso es la libreria de google "signOut()"para autentificarnos
 // despues de importar en el modulo "httpClientModule" ahora podemos usar "HttpClient"
 import { HttpClient } from '@angular/common/http';
-import { tap, map, catchError } from 'rxjs/operators';
+import { tap, map, catchError, delay } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -11,6 +11,7 @@ import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.model';
 import { HeaderComponent } from '../shared/header/header.component';
+import { CargarUsuario } from '../interfaces/cargar-usuarios.interface';
 
 const base_url = environment.base_url;
 declare const gapi: any;
@@ -29,16 +30,25 @@ export class UsuarioService {
   ) {
     this.googleInit();
   }
-
+  // Traer el token de localStorage
   get token() {
     return localStorage.getItem('token') || ''; //para evitar estar haciendo esto cada que necesitemos el token del localstorage
   }
-
+  // Traer ek uid de el usuario logeado
   get uid(): string {
     return this.usuario.uid || '';
   }
-  // Logout
+  // Traer los headers
 
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token,
+      },
+    };
+  }
+
+  // Iniciamos la api de auth2 para autenticarnos con google
   googleInit() {
     return new Promise<void>((resolve) => {
       gapi.load('auth2', () => {
@@ -100,17 +110,17 @@ export class UsuarioService {
 
   // Actualizar usuario
   actualizarPerfil(data: { email: string; nombre: string; role: any }) {
-    // Agregamos el role
+    
     data = {
       ...data,
-      role: this.usuario.role,
-    };
-    //url/params/body/headers
-    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token, //al pasarlo por el renew se genera un nuevo token mas actual por ende el token que esta guardado ya no sirve por eso abajo tenemos que mandar el nuevo
-      },
-    });
+      role: this.usuario.role
+    }
+
+    return this.http.put(
+      `${base_url}/usuarios/${this.uid}`,
+      data,
+      this.headers
+    );
   }
 
   // Inicio de sesión "normal"
@@ -135,4 +145,51 @@ export class UsuarioService {
       })
     );
   };
+
+  // Cargar los usuarios
+  cargarUsuarios(desde: number = 0) {
+    const url = `${base_url}/usuarios?desde=${desde}`;
+    // Ya que esta peticion solo nos devolvia la info del usuario(mas no creaba una instancia de el modelo Usuario acá en el fron)
+    // Se tuvo que crear una nueva instancia para cada usuario dentro de el array y como viene toda la info fue sencillo
+    return this.http.get<CargarUsuario>(url, this.headers).pipe(
+      delay(300), //con esto simulamos una carga lenta de los datos, quitar si queremos que aparezcan muy rapido
+      map((resp) => {
+        // "resp.usuarios.map()" este map es similar al de arriba con la diferencia que uno es map metodo de array y el de arriba es map metodo de observables ambos transforman
+        // Solo que el de array ejecuta una funcion para cada uno de los elementos del array con la finalidad de devolver un nuevo array ya modificado, en este caso para cada valor del array se Genero una nueva instancia de nuestro modelo Usuario
+        const usuarios = resp.usuarios.map(
+          (user) =>
+            new Usuario(
+              user.nombre,
+              user.email,
+              ' ',
+              user.img,
+              user.google,
+              user.role,
+              user.uid
+            )
+        );
+        return {
+          total: resp.total,
+          usuarios, //Ahora este usuario es un array de Instancias de modelo Usuario, lo que indica que ahora si podemos usar las propiedades del modelo, antes solo recibiamos un json con informacion y ya, pero no podiamos usar los metodos de nuestro modelo del front
+        };
+      })
+    );
+  }
+
+  // Borrar el usuario
+  eliminarUsuario(usuario: Usuario) {
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+
+    return this.http.delete(url, this.headers);
+  }
+
+   // Actualizar usuario
+   guardarUsuario(usuario:Usuario) {
+    //url/params/body/headers
+    return this.http.put(
+      `${base_url}/usuarios/${usuario.uid}`,
+      usuario,
+      this.headers
+    );
+  }
 }

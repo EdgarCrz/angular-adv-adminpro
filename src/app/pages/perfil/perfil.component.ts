@@ -62,7 +62,7 @@ export class PerfilComponent implements OnInit {
       return (this.imgTemp = null);
     }
     const reader = new FileReader(); // FileReader(): Basicamente se encarga de que las aplicaciones web pudan leer ficherons o informacion en buffer almacenados en el cliente de forma asyncrona usando objetos file o blop, osea nos permite ver el archivo que acaba de cargar el usuario
-    reader.readAsDataURL(file); // este metodo comienza la lectura del objeto blob al terminar tenemos el atributo "result" contiene una data URL que contiene los datos del fichero
+    reader.readAsDataURL(file); // este metodo comienza la lectura del objeto blob o file al terminar tenemos el atributo "result" contiene una data URL que contiene los datos del fichero
     // onloadend: se activa una vez que ha terminado la lectura de el archivo (file) en este caso al terminar ejecuta una funcion
     reader.onloadend = () => {
       this.imgTemp = reader.result; //la img temporarl ahora tendra el valor de el result: que es una img base64 osea el codigo que crea la img
