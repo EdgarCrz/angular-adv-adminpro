@@ -38,10 +38,10 @@
               [src]="modalImagenService.img"
               class="img-avatar"
               alt=""
-            />
-            <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar" alt="" />
+            /> <!--Esta seria la img actual, dicha img se mostrar solo si aun no se ha elegido una nueva imagen(imgTem)-->
+            <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar" alt="" /> <!--Si existe una imgTem ahora muestra esa (imgTem) que es la nueva img-->
           </div>
-          <input type="file" (change)="cambiarImagen($event)" />
+          <input type="file" (change)="cambiarImagen($event)" /> <!--cuando detecte el evento change, mandaremos el $event al metodo cambiarImagen($event)-->
         </div>
         <div class="modal-footer">
           <button

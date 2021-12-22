@@ -18,12 +18,18 @@
 .img-avatar {
   width: 200px;
 }
+.w200{
+  width:200px;
+}
 
 .w100 {
   width: 100px;
 }
 .w140 {
   width: 140px;
+}
+.centradoImg{
+  justify-content: space-around;
 }
 .avatar {
   width: 50px;
@@ -43,3 +49,4 @@
 .oculto {
   display: none;
 }
+

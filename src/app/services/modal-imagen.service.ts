@@ -11,6 +11,7 @@ export class ModalImagenService {
   public id?: string;
   public img?: string;
 
+  // Este eventEmitter lo mandamos llamar en e modal de carga de img, en este caso en el modal despues de subir una img, usamos esta propiedad de ester servicio, asi mandamos la señal de que una nueva img se cargo
   public nuevaImagen: EventEmitter<string> = new EventEmitter<string>() // EventEmitter: Nos permite enviar informacion entre componentes, independientemente la jerarquia padre/hijo: esto contendra la img/ TODO: en este caso no ocupamos la img, solo el evento de carga,
 
   // Inicialmente la vista recurrira a este getter obteniendo asi el valor actual que será true con esto se mantendra oculto
@@ -24,7 +25,7 @@ export class ModalImagenService {
     id?: string,
     img: string = 'no-img'
   ) {
-    this._ocultarModal = false;
+    this._ocultarModal = false; //este metodo activa el modal por lo tanto "ocultarModal" ahora debera estar inactivo, para poder mostrarlo
     this.tipo = tipo;
     this.id = id;
     this.img = img;
@@ -38,7 +39,7 @@ export class ModalImagenService {
   }
   // Para cerrar el modal hacemos lo contrario cambiamos a true el valor de la propiedad, de esta manera se le añade la clase ocultar
   cerrarModal() {
-    this._ocultarModal = true;
+    this._ocultarModal = true; // Esta funcion ahora tendra que esconder de nueva cuenta el modal  es por eso que ahora "ocualtarModal volvera a tener true"
   }
   constructor() {}
 }

@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Médico</h4>
+        <h6 class="card-subtitle">Actualizar información</h6>
+        <form [formGroup]="medicoForm" (submit)="guardarMedico()" class="form p-t-20">
+          <div class="form-group row" *ngIf="medicoSeleccionado">
+            <label for="exampleInputuname">Foto</label>
+            <div class="input-group centradoImg">
+              <img
+                class="w200 justify-content-center "
+                [src]="medicoSeleccionado?.img | imagen: 'medicos'"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputuname">Nombre</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-user"></i></div>
+              <input
+                formControlName="nombre"
+                type="text"
+                class="form-control"
+                id="exampleInputuname"
+                placeholder="Nombre del médico"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Hospital</label>
+            <select formControlName="hospital" class="form-control">
+              <option value="">Seleccione Hospital</option>
+              <option  *ngFor="let hospital of hospitales" [value]="hospital._id">{{hospital.nombre}}</option> <!--Notese que usamos la directiva ng-for para replicar la opcion  y como dato vamos a impromir en cada vuelta el nombre del hospital, tambien que de cada hospital no vamos a usar el nombre como value si no que vamos a usar el id de el hospital-->
+              
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="medicoForm.invalid"
+            class="btn btn-success waves-effect waves-light m-r-10"
+          >
+            <i class="fa fa-save"></i> Guardar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 animated fadeIn fast" *ngIf="hospitalSeleccionado">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{hospitalSeleccionado?.nombre}}</h4>
+        <h6 class="card-subtitle">Hospital asignado</h6>
+        <img
+          class="img-thumbnail justify-content-center"
+          [src]="hospitalSeleccionado?.img | imagen: 'hospitales'"
+          [alt]="hospitalSeleccionado?.nombre"
+        />
+      </div>
+    </div>
+  </div>
+</div>

@@ -72,7 +72,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       .busquedas('usuarios', termino) //Ya que el servicio requiere estos dos campos, el tipo se lo mandadmos en duro 'usuarios' y el termino es aquello que obtenemos en el input
       .subscribe((resultados) => {
         // para ejecutar el observable nos suscribimos y esperamos el resultado con el resultados hacemos lo que necesitamos
-        this.usuarios = resultados; // en este caso lo que queremos es igualar nuestra propedad usuarios(que es el array que nos muestra la tabla) con los resultados y como ambos son tipo array no hay ningun problema
+        // TODO: para evitar problemas con el tipado es necesario "Castear" yo lo comprendí que le volvemos a indicar que tipo es, ya que como el servicio puede ser de 3 tipos hasta el momento 2 Usuario u Hospital
+        this.usuarios = resultados as Usuario[]; // en este caso lo que queremos es igualar nuestra propedad usuarios(que es el array que nos muestra la tabla) con los resultados y como ambos son tipo array no hay ningun problema
       });
   }
 

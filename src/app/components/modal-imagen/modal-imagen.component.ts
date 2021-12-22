@@ -56,7 +56,7 @@ export class ModalImagenComponent implements OnInit {
         // con then obtenemos el resultado de esa promesa ya sea resolve o reject notese: que en esta promesa no incluimos como tal resolve o reject solo el try and catch y ahi en cada uno de ellos retornamos algo y segun se resulve deolvera un resultado
 
         Swal.fire('Guardado', 'Imagen actualizada', 'success');
-        this.modalImagenService.nuevaImagen.emit(img) // con este EventEmitter, mandamos esta img al servicio, y por ende ahora la podemos mandar a cualquier otro componente donde usemos el servicio
+        this.modalImagenService.nuevaImagen.emit(img) // eventEmitter event: con este emisor de eventos mandamos la señal de que existe una nueva img,
 
         this.cerrarModal();
       })
