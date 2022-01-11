@@ -28,9 +28,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-8">
-            <h4 class="card-title">
-              Hospitales ({{ medicos.length | number }})
-            </h4>
+            <h4 class="card-title">Médicos ({{ medicos.length | number }})</h4>
             <h6 class="card-subtitle">Médicos registrados en la aplicación.</h6>
           </div>
           <div class="col">
@@ -74,8 +72,8 @@
                     <i class="fa fa-pencil text-inverse m-r-10"></i>
                   </a>
                   <a
-                  class="cursor"
-                   (click)="borrarMedico(medico)"
+                    class="cursor"
+                    (click)="borrarMedico(medico)"
                     data-toggle="tooltip"
                     data-original-title="Borrar"
                   >

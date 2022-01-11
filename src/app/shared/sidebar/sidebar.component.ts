@@ -12,13 +12,10 @@ export class SidebarComponent implements OnInit {
   // public imgUrl = '';esta forma se uso en header para traer y mostrar esta info, es directo del modelo el de abajo es por una instancia del modelo
   // public nombreUsuario = '';esta forma se uso en header para traer y mostrar esta info, es directo del modelo el de abajo es por una instancia del modelo
   public usuario!: Usuario;//Por el contrario de header aqui creamos una nueva propiedad publica usuario de tipoUsuario
-  menuItems: any[] = [];
   constructor(
-    private sidebarServices: SidebarService,
+    public sidebarServices: SidebarService,
     private usuarioService: UsuarioService
   ) {
-    // inyectamoms nuestro servicio
-    this.menuItems = this.sidebarServices.menu; // ejecutamos dicho servicio para mantener mas limpio nuestro codigo
     // accedemos al servicio, que a su vez tiene una instancia del modelo usuario y a su vez accedemos a su metodo "imagenUrl"
     this.usuario = usuarioService.usuario; //aqui igualamos nuestro usuario local a la instancia del modelo que se encuentra en ese servicio
   }

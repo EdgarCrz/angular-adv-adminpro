@@ -94,4 +94,10 @@ export class BusquedasService {
         })
       ); //transformamos el resp que es un json, para obtener solamente la propiedas "resultados" resultados es un array con las coincidencias que obtuvimos
   }
+
+  busquedaGlobal(termino: string) {
+    const url = `${base_url}/todo/${termino}`;
+
+    return this.http.get<any>(url, this.headers);
+  }
 }

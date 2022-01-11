@@ -10,7 +10,6 @@ import { LoginForm } from '../interfaces/login-form.interface';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.model';
-import { HeaderComponent } from '../shared/header/header.component';
 import { CargarUsuario } from '../interfaces/cargar-usuarios.interface';
 
 const base_url = environment.base_url;
@@ -33,6 +32,10 @@ export class UsuarioService {
   // Traer el token de localStorage
   get token() {
     return localStorage.getItem('token') || ''; //para evitar estar haciendo esto cada que necesitemos el token del localstorage
+  }
+  // traer el role de el usuario
+  get role(): 'ADMIN_ROLE' | 'USER_ROLE' {
+    return this.usuario.role!;
   }
   // Traer ek uid de el usuario logeado
   get uid(): string {
@@ -65,10 +68,17 @@ export class UsuarioService {
     });
   }
 
+  guardarLocalStorage(token: string, menu: any) {
+    localStorage.setItem('token', token); //Este token que viene en el resp es una nueva version que nos propporciona el backend diferente ya que el renew token genera un nuevo token, a partir de el viejo token
+    localStorage.setItem('menu', JSON.stringify(menu)); // el backend nos esta mandando un objeto javascript(objeto literal) con stringify convertimos eso en formato JSON y lo almacenamos en el local storage
+  }
+
   // Salir de la aplicaccion de manera adecuada borrando el token del localStorage y ademas cerrando la sesion de google,
   //
   logout() {
     localStorage.removeItem('token'); //Removemos el token
+    // TODO: Borrar menu
+    localStorage.removeItem('menu');
     this.auth2.signOut().then(() => {
       this.ngZone.run(() => {
         this.router.navigateByUrl('/login');
@@ -88,7 +98,7 @@ export class UsuarioService {
         map((resp: any) => {
           const { email, google, img = '', nombre, role, uid } = resp.usuario; // desestructuramos la info de la respuesta json
           this.usuario = new Usuario(nombre, email, '', img, google, role, uid); //creamos una nueva instancia del usuario
-          localStorage.setItem('token', resp.token); //Este token que viene en el resp es una nueva version que nos propporciona el backend diferente ya que el renew token genera un nuevo token, a partir de el viejo token
+          this.guardarLocalStorage(resp.token, resp.menu); // para reducir codigo centralizamos  ambos seteos de localStorage en un metodo que carga ambas cosas, valio la pensa hacerlo así ya que esto se repetia varias veces (4-5)
           return true;
         }),
         // si hay una respuesta devolvemos un true si hay error false y con eso activamos o desactivamos el
@@ -103,18 +113,17 @@ export class UsuarioService {
     // el primer parametrp es la url de la peticion y el segundo el body de la peticion
     return this.http.post(`${base_url}/usuarios`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu); // para reducir codigo centralizamos  ambos seteos de localStorage en un metodo que carga ambas cosas, valio la pensa hacerlo así ya que esto se repetia varias veces (4-5)
       })
     );
   };
 
   // Actualizar usuario
   actualizarPerfil(data: { email: string; nombre: string; role: any }) {
-    
     data = {
       ...data,
-      role: this.usuario.role
-    }
+      role: this.usuario.role,
+    };
 
     return this.http.put(
       `${base_url}/usuarios/${this.uid}`,
@@ -129,7 +138,7 @@ export class UsuarioService {
     // el primer parametro es la url de la peticion y el segundo el body de la peticion
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token); // usamos el metodo "serItem" de "localStorage" para mandar "token" (asi le llamamos es la key puede tener cualquier nombre) como segundo parametro mandamos lo que queremos guardar debe ser un string
+        this.guardarLocalStorage(resp.token, resp.menu); // para reducir codigo centralizamos  ambos seteos de localStorage en un metodo que carga ambas cosas, valio la pensa hacerlo así ya que esto se repetia varias veces (4-5)
       })
     );
   };
@@ -141,7 +150,7 @@ export class UsuarioService {
     // el primer parametro es la url de la peticion y el segundo el body de la peticion
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token); // usamos el metodo "setItem" de "localStorage" para mandar "token" (asi le llamamos es la key puede tener cualquier nombre) como segundo parametro mandamos lo que queremos guardar debe ser un string
+        this.guardarLocalStorage(resp.token, resp.menu); // para reducir codigo centralizamos  ambos seteos de localStorage en un metodo que carga ambas cosas, valio la pensa hacerlo así ya que esto se repetia varias veces (4-5)
       })
     );
   };
@@ -183,8 +192,8 @@ export class UsuarioService {
     return this.http.delete(url, this.headers);
   }
 
-   // Actualizar usuario
-   guardarUsuario(usuario:Usuario) {
+  // Actualizar usuario
+  guardarUsuario(usuario: Usuario) {
     //url/params/body/headers
     return this.http.put(
       `${base_url}/usuarios/${usuario.uid}`,

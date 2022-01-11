@@ -40,7 +40,7 @@ export class MedicoComponent implements OnInit {
 
     this.medicoForm = this.fb.group({
       nombre: ['', Validators.required],
-      hospital: ['', Validators.required],
+      hospital: ['', Validators.required]
     });
 
     this.cargarHospitales();

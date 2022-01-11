@@ -13,6 +13,8 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
 import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
 import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
 import { MedicoComponent } from './mantenimientos/medicos/medico.component';
+import { BusquedaComponent } from './busqueda/busqueda.component';
+import { AdminGuard } from '../guards/admin.guard';
 
 const routes: Routes = [
   // implementacion de rutas hijas(son las que se encuentran dentro de una ruta padre como las de abajo)
@@ -53,14 +55,14 @@ const routes: Routes = [
         data: { titulo: 'Perfil' },
       },
       { path: 'rxjs', component: RxjsComponent, data: { titulo: 'Rxjs' } },
+      {
+        path: 'buscar/:termino',
+        component: BusquedaComponent,
+        data: { titulo: 'Busqueda' },
+      },
 
       // Mantenimientos
 
-      {
-        path: 'usuarios',
-        component: UsuariosComponent,
-        data: { titulo: 'Usuarios de aplicación' },
-      },
       {
         path: 'hospitales',
         component: HospitalesComponent,
@@ -75,6 +77,14 @@ const routes: Routes = [
         path: 'medico/:id',
         component: MedicoComponent,
         data: { titulo: 'Mantenimiento de medico' },
+      },
+      // RUTAS DE ADMIN
+      {
+        path: 'usuarios',
+        component: UsuariosComponent,
+        canActivate: [AdminGuard], 
+
+        data: { titulo: 'Usuarios de aplicación' },
       },
     ],
   },
