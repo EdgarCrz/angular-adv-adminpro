@@ -52,4 +52,7 @@
 .oculto {
   display: none;
 }
+.color {
+  background: red;
+}
 

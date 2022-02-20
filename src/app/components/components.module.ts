@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { DonaComponent } from './dona/dona.component';
 import { ChartsModule } from 'ng2-charts';
 import { ModalImagenComponent } from './modal-imagen/modal-imagen.component';
+import { GisComponent } from './gis/gis.component';
 
 @NgModule({
-  declarations: [IncrementadorComponent, DonaComponent, ModalImagenComponent],
+  declarations: [IncrementadorComponent, DonaComponent, ModalImagenComponent, GisComponent],
   exports: [IncrementadorComponent, DonaComponent, ModalImagenComponent],
   imports: [CommonModule, FormsModule, ChartsModule],
 })
